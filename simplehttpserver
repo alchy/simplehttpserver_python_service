@@ -1,0 +1,51 @@
+#!/bin/bash
+# chkconfig: 2345 20 80
+# descriptioni: simplehttpserver for publishing data from Tenable SC to Provozni denik
+
+# Source function library.
+. /etc/init.d/functions
+
+start() {
+    # code to start app comes here
+    # example: daemon program_name &
+    export secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/automaton/simplehttpserver/"
+    cd /home/automaton/simplehttpserver/
+    sudo -u automaton echo "[`date`] simplehttpserver starting..." >> /var/log/simplehttpserver.log
+    sudo -u automaton /usr/bin/python ./simplehttpserver.py >> /var/log/simplehttpserver.log 2>&1 &
+}
+
+stop() {
+    # code to stop app comes here
+    # example: killproc program_name
+    kill $(pgrep -f "simplehttpserver")
+}
+
+status() {
+    # get status
+    if [ $(ps -ef | grep "simplehttpserver.py" | grep -v "grep" | wc -l) == 2 ]; then
+       echo "running"
+    else
+       echo "stopped"
+    fi
+}
+
+
+case "$1" in
+    start)
+       start
+       ;;
+    stop)
+       stop
+       ;;
+    restart)
+       stop
+       start
+       ;;
+    status)
+       # code to check status of app comes here
+       # example: status program_name
+       status
+       ;;
+    *)
+       echo "Usage: $0 {start|stop|status|restart}"
+esac
