@@ -1,0 +1,6 @@
+[root@d1vtsc1 simplehttpserver]# cat /etc/logrotate.d/simplehttpserver
+/var/log/simplehttpserver.log {
+    missingok
+    notifempty
+    weekly
+}
