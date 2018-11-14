@@ -7,8 +7,6 @@
 
 start() {
     # code to start app comes here
-    # example: daemon program_name &
-    export secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/automaton/simplehttpserver/"
     cd /home/automaton/simplehttpserver/
     sudo -u automaton echo "[`date`] simplehttpserver starting..." >> /var/log/simplehttpserver.log
     sudo -u automaton /usr/bin/python ./simplehttpserver.py >> /var/log/simplehttpserver.log 2>&1 &
@@ -16,12 +14,11 @@ start() {
 
 stop() {
     # code to stop app comes here
-    # example: killproc program_name
     kill $(pgrep -f "simplehttpserver")
 }
 
 status() {
-    # get status
+    # code to get status comes here
     if [ $(ps -ef | grep "simplehttpserver.py" | grep -v "grep" | wc -l) == 2 ]; then
        echo "running"
     else
